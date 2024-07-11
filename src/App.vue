@@ -47,5 +47,6 @@ export default {
 * {
   font-family: "Open Sans";
   font-style: normal;
+  font-weight: 500;
 }
 </style>
