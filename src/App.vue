@@ -1,6 +1,8 @@
 <template>
   <div id="real-estate-app">
-    <router-view />
+    <router-view v-if="getAppointmentsList.length" />
+    <LoadingSplash v-else></LoadingSplash>
+
   </div>
 </template>
 
@@ -17,7 +19,33 @@ export default {
 
   },
   computed: {
-    ...mapGetters(["getContactsList", "getAgentsList", "getAppointmentsList"]),
+    ...mapGetters(["getContactsList", "getAgentsList", "getAppointmentsList","getModalStatus"]),
+  },
+  watch: {
+    getModalStatus(newValue) {
+      console.log(newValue,'ns')
+      let app = document.getElementById("real-estate-app");
+      if (newValue) {
+        let modalDiv = document.createElement("div");
+        modalDiv.id = "modal-bg";
+        modalDiv.style = `z-index:0;background:#000000b6;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        backdrop-filter: blur(5px) !important
+        ;
+        `;
+ 
+        app.append(modalDiv);
+      } else {
+        let removedElement = document.getElementById("modal-bg");
+        if (removedElement?.parentNode) {
+          removedElement.parentNode.removeChild(removedElement);
+        }
+      }
+    },
   },
   methods: {
    async setContactsList() {
@@ -40,13 +68,23 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-// @import "@/assets/scss/app.scss";
-// @import "@/assets/scss/scroll.scss";
+<style lang="scss">
+@import "@/assets/scss/app.scss";
+@import "@/assets/scss/scroll.scss";
+
+#real-estate-app {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
 
 * {
   font-family: "Open Sans";
   font-style: normal;
-  font-weight: 500;
 }
 </style>
