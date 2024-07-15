@@ -6,6 +6,7 @@ import baseServices from '@/services/indexAirTableService';
 import getContactsList from '@/services/getContactsListService';
 import getAppointmentsList from '@/services/getAppointmentsListService';
 import getAgentsList from '@/services/getAgentListService';
+import { v4 as uuid } from "uuid"
 const moment = require('moment');
 
 const storageKey = process.env.VUE_APP_STORAGE_KEY || '';
@@ -51,9 +52,39 @@ return val
 const store =  createStore({
   plugins: [vuexLocal.plugin],
   state:{
+    appointmentModalType:'create',
     contactsList:[],
     appointmentsList:[],
     agentsList:[],
+    isAppGeneralModalOpen:false,
+    appointmentsListFilter:{
+      selectedAgentsIds : [],
+      selectedAppointmentStatuses : 'all',
+      dateByFrom:'',
+      dateByTo: '',
+      searchBoxText:'',
+
+    },
+    appointmentsObjectModel:{
+      id:'',
+      createdTime:'',
+      fields:{
+        appointment_id:'' ,
+        appointment_date: '',
+        appointment_address: '',
+        contact_id: [],
+        contact_name: [],
+        contact_surname: [],
+        contact_email: [],
+        contact_phone: [],
+        is_cancelled:false,
+        agent_id: [],
+        agent_name: [],
+        agent_surname: [],
+        
+      },
+      
+    }
   },
   mutations: {
     setContactsList(state,contactsList){
@@ -61,11 +92,78 @@ const store =  createStore({
     },
     setAppointmentsList(state,appointmentsList){
       // sort by appointment date asc
-      state.appointmentsList = appointmentsList.sort((a,b) => moment(a.fields.appointment_date) - moment(b.fields.appointment_date));
+      state.appointmentsList = appointmentsList.sort((a,b) => moment(b.fields.appointment_date) - moment(a.fields.appointment_date));
+    },
+    setAppointmentsObjectModel(state,{key = '', value = ''}){
+      if(!key) return;
+      if(typeof state.appointmentsObjectModel.fields[key] === 'undefined') return;
+      state.appointmentsObjectModel.fields[key] = value;
+    },
+    setIsAppGeneralModalOpen(state,isAppGeneralModalOpen){
+      state.isAppGeneralModalOpen = isAppGeneralModalOpen;
+      if(!isAppGeneralModalOpen) {
+        state.appointmentsObjectModel = {
+          id:'',
+          createdTime:'',
+          fields:{
+            appointment_id: '',
+            appointment_date: '',
+            appointment_address: '',
+            contact_id: [],
+            contact_name: [],
+            contact_surname: [],
+            contact_email: [],
+            contact_phone: [],
+            is_cancelled:false,
+            agent_id: [],
+            agent_name: [],
+            agent_surname: [],
+            
+          },
+          
+        }
+      }
     },
     setAgentsList(state,agentsList){
       state.agentsList = agentsList;
     },
+
+    setAppointmentModalType(state,appointmentModalType){
+      state.appointmentModalType = appointmentModalType;
+    },
+
+    setNewAppointment(state){
+      state.appointmentsObjectModel.id = uuid(17);
+      state.appointmentsObjectModel.createdTime = moment().format();
+      state.appointmentsObjectModel.fields.appointment_id = uuid(3);
+      state.appointmentsList.push(state.appointmentsObjectModel);
+      state.appointmentsList = state.appointmentsList.sort((a,b) => moment(b.fields.appointment_date) - moment(a.fields.appointment_date));
+
+    },
+
+    setSelectedAppointmentEditInfo(state,appointment){
+      state.appointmentsObjectModel.id = appointment.id;
+      state.appointmentsObjectModel.createdTime = appointment.createdTime;
+      Object.keys(appointment.fields).forEach(key => {
+        state.appointmentsObjectModel.fields[key] = appointment.fields[key]
+      })
+ 
+    },
+    
+    editAppointment(state){
+
+      const index = state.appointmentsList.findIndex(appointment => appointment.id === state.appointmentsObjectModel.id)
+      state.appointmentsList[index] = state.appointmentsObjectModel;
+      state.appointmentsList = state.appointmentsList.sort((a,b) => moment(b.fields.appointment_date) - moment(a.fields.appointment_date));
+
+
+
+    },
+    setAppointmentsListFilter(state,{key = '', value = ''}){
+      if(!key) return;
+      if(typeof state.appointmentsListFilter[key] === 'undefined') return;
+      state.appointmentsListFilter[key] = value;
+    }
   },
   actions:{
     async getContactsList({commit}){
@@ -113,6 +211,10 @@ const store =  createStore({
     getContactsList: (state) => state.contactsList,
     getAppointmentsList: (state) => state.appointmentsList,
     getAgentsList: (state) => state.agentsList,
+    getAppointmentsListFilter: (state) => state.appointmentsListFilter,
+    getModalStatus: (state) => state.isAppGeneralModalOpen,
+    getAppointmentsObjectModel: (state) => state.appointmentsObjectModel,
+    getAppointmentModalType: (state) => state.appointmentModalType,
 
 
   }
