@@ -8,7 +8,7 @@
     <button @click="$emit('setAppointment', appointmentActionType)"
         class="appointment-control-buttons-container__set-appointment-btn"
         :class="[appointmentActionType === 'create' ? 'appointment-control-buttons-container__set-appointment-btn--create' : 'appointment-control-buttons-container__set-appointment-btn--edit',
-         isActionButtonActive ? '' : 'disabled']
+        getIsButtonActive ? '' : 'disabled']
         "
         >
         {{ appointmentActionType === 'create' ? 'Create' : 'Save' }}
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { mapGetters } from "vuex";
 export default {
     emits: ["closeAppointmentModal", "setAppointment"],
@@ -37,7 +38,9 @@ export default {
 
     computed: {
         ...mapGetters(["getAppointmentsObjectModel"]),
-
+        getIsButtonActive() {
+            return this.isActionButtonActive
+        }
 
     },
 
@@ -56,7 +59,7 @@ export default {
                 const typesHasLength = ['string','object'];
                 if( typesHasLength.includes(typeof this.getAppointmentsObjectModel.fields[key])) {
                     if(key === 'appointment_date') {
-                            return true;
+                            return moment(this.getAppointmentsObjectModel.fields[key]).isValid() === true;
                     }
                     return this.getAppointmentsObjectModel.fields[key].length
                 }

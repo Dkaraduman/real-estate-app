@@ -65,9 +65,9 @@ export default {
 
 <style scoped lang="scss">
 .appointment-modal-container {
-  position: absolute;
-  top: 6%;
-  left: 50%;
+    position: absolute;
+    top: 6%;
+    left: 50%;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
@@ -85,6 +85,8 @@ export default {
     gap: 1.2em;
     padding: .5em 1em;
     z-index: 1;
+    overflow-y: auto;
+    overflow-x:hidden ;
 
     @media screen and (max-width: 1000px) {
         width: 50%; /* Wider on smaller screens */

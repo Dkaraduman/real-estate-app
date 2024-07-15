@@ -116,7 +116,8 @@ export default {
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    height: 100%;
+    height: 25vh;
+
     gap: 0;
 
     & h4 {
@@ -132,11 +133,11 @@ export default {
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    height: 10em;
     overflow: auto;
     border: 1px solid #E4E4E4;
     padding: 1em 0;
     gap: 1em;
+    height: 100%;
 
     &__card {
         display: flex;
