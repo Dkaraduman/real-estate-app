@@ -1,0 +1,85 @@
+
+.v-binder-follower-content {
+    font-size: .8vw !important;
+}
+
+.naive-ui-global-n-tree-selecter  .n-base-selection {
+    --n-border-radius: 12px !important; /* Set the CSS variable globally for all such elements */
+    --n-placeholder-color: #667085 !important;
+    --n-font-size: .8vw !important;
+    --n-arrow-color: #667085 !important;
+    --n-padding: .3em .5em !important;
+    --n-padding-single: .3em .8em !important;
+    --n-height: 3.45em !important;
+ 
+
+
+  }
+
+  .n-select-ui .n-base-selection {
+    --n-height: 4em !important ;
+    --n-border-radius: 12px !important; /* Set the CSS variable globally for all such elements */
+    --n-padding-single:  .8em !important;
+    --n-font-size: .8vw !important;
+
+
+
+
+  }
+
+  .date-picker-input-modal {
+    --dp-input-padding : 1.2em .5em !important;
+
+    & .dp__input {
+        border-radius: 12px !important;
+        --dp-font-size : .8vw !important;
+
+
+    }
+
+
+  }
+  .date-picker-input {
+
+    & .dp__input_icon {
+        // --dp-input-icon-padding : .3em .5em !important;
+        height: 40%;
+        width: max-content !important;
+        // position: absolute !important;
+        // top: .4vh !important;
+        left: .4em;
+        transform: translateY(-50%) !important;
+
+    }
+
+    & .dp__clear_icon{
+
+        height: 40% !important;
+        background: #ececec;
+        border-radius: 18px;
+        transform: translateY(-45%);
+        right: .4em;
+
+
+    }
+
+    & .dp__input_icons {
+        padding: 0 .1em !important;
+    }
+    & .dp__input {
+        --dp-input-padding : .3em .5em !important;
+        --dp-font-size : .8vw !important;
+
+
+        border-radius: 12px !important;
+        font-size: .8vw !important;
+        height: 3.5em !important;
+
+        &::placeholder {
+            text-align: start !important;
+        }
+    }
+
+
+    
+  }
